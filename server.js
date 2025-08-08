@@ -12,12 +12,17 @@ const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
     origin: ["https://kutral.github.io", "http://localhost:3000"],
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true
   }
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['https://kutral.github.io', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.static('client/build'));
 
@@ -229,10 +234,19 @@ const PORT = process.env.PORT || 10000;
 
 // API endpoint to get all messages
 app.get('/api/messages', async (req, res) => {
+  console.log('GET /api/messages request received');
   try {
     const messages = await db.collection(COLLECTION_NAME).find({}).toArray();
-    console.log('Returning messages:', JSON.stringify(messages, null, 2));
+    console.log(`Found ${messages.length} messages in database`);
+    console.log('Messages:', JSON.stringify(messages, null, 2));
+    
+    // Enable CORS explicitly for this endpoint
+    res.header('Access-Control-Allow-Origin', 'https://kutral.github.io');
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    
     res.json(messages);
+    console.log('Response sent successfully');
   } catch (error) {
     console.error('Error fetching messages:', error);
     res.status(500).json({ error: 'Internal server error' });

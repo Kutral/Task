@@ -27,11 +27,29 @@ function App() {
   }, []);
 
   const fetchMessages = async () => {
+    setLoading(true);
     try {
       console.log('Fetching messages from:', `${API_BASE_URL}/api/messages`);
-      const response = await fetch(`${API_BASE_URL}/api/messages`);
+      const response = await fetch(`${API_BASE_URL}/api/messages`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
       console.log('Received messages:', data);
+      
+      if (!Array.isArray(data)) {
+        console.error('Expected array of messages, got:', typeof data);
+        return;
+      }
       
       // Group messages by conversation (wa_id or from number)
       const conversationsMap = data.reduce((acc, message) => {
@@ -49,10 +67,11 @@ function App() {
       }, {});
 
       const conversationsList = Object.values(conversationsMap);
+      console.log('Processed conversations:', conversationsList);
       setConversations(conversationsList);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching messages:', error);
+    } finally {
       setLoading(false);
     }
   };
