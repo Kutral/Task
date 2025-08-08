@@ -18,18 +18,19 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #00a884;
+  padding: 19px;
 }
 
 .whatsapp-container {
   width: 100%;
-  max-width: 1200px;
-  height: 90vh;
+  max-width: 1600px;
+  height: calc(100vh - 38px);
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   display: flex;
   overflow: hidden;
+  position: relative;
+  box-shadow: 0 6px 18px rgba(11,20,26,.05);
 }
 
 .loading {
