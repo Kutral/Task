@@ -133,27 +133,48 @@ function App() {
     fetchConversationMessages(conversation.id);
   };
 
-  const handleSendMessage = async (text) => {
-    if (!selectedConversation || !text.trim()) return;
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/messages`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to: selectedConversation.wa_id,
-          text: text.trim()
-        }),
-      });
-
-      if (response.ok) {
-        const newMessage = await response.json();
-        setMessages(prev => [...prev, newMessage]);
+  const handleSendMessage = (message, isSampleMessages = false) => {
+    if (isSampleMessages && Array.isArray(message)) {
+      setMessages(message);
+      // Group messages by conversation
+      const conversationGroups = message.reduce((groups, msg) => {
+        const phoneNumber = msg.wa_id;
+        if (!groups[phoneNumber]) {
+          groups[phoneNumber] = {
+            phoneNumber,
+            name: msg.name,
+            lastMessage: msg.text,
+            timestamp: msg.timestamp
+          };
+        } else if (msg.timestamp > groups[phoneNumber].timestamp) {
+          groups[phoneNumber].lastMessage = msg.text;
+          groups[phoneNumber].timestamp = msg.timestamp;
+        }
+        return groups;
+      }, {});
+      
+      const conversationList = Object.values(conversationGroups);
+      setConversations(conversationList);
+      if (conversationList.length > 0 && !selectedConversation) {
+        setSelectedConversation(conversationList[0]);
       }
-    } catch (error) {
-      console.error('Error sending message:', error);
+      return;
+    }
+
+    if (selectedConversation) {
+      const newMessage = {
+        text: message,
+        from: '918329446654', // Business number
+        timestamp: Math.floor(Date.now() / 1000),
+        type: 'text',
+        status: 'sent',
+        wa_id: selectedConversation.phoneNumber
+      };
+      
+      setMessages([...messages, newMessage]);
+      if (socket) {
+        socket.emit('message', newMessage);
+      }
     }
   };
 
