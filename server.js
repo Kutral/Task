@@ -231,6 +231,7 @@ const PORT = process.env.PORT || 10000;
 app.get('/api/messages', async (req, res) => {
   try {
     const messages = await db.collection(COLLECTION_NAME).find({}).toArray();
+    console.log('Returning messages:', JSON.stringify(messages, null, 2));
     res.json(messages);
   } catch (error) {
     console.error('Error fetching messages:', error);

@@ -28,20 +28,23 @@ function App() {
 
   const fetchMessages = async () => {
     try {
+      console.log('Fetching messages from:', `${API_BASE_URL}/api/messages`);
       const response = await fetch(`${API_BASE_URL}/api/messages`);
       const data = await response.json();
+      console.log('Received messages:', data);
       
-      // Group messages by conversation
+      // Group messages by conversation (wa_id or from number)
       const conversationsMap = data.reduce((acc, message) => {
-        const conversationId = message.from;
+        const conversationId = message.wa_id || message.from;
         if (!acc[conversationId]) {
           acc[conversationId] = {
             id: conversationId,
-            name: message.name || message.from,
+            name: message.name || conversationId,
             messages: []
           };
         }
         acc[conversationId].messages.push(message);
+        acc[conversationId].messages.sort((a, b) => a.timestamp - b.timestamp);
         return acc;
       }, {});
 

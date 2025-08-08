@@ -25,27 +25,29 @@ async function processPayloads(db) {
       const payload = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       
       if (payload.payload_type === 'whatsapp_webhook') {
+        console.log('Processing webhook payload:', JSON.stringify(payload.metaData, null, 2));
         const entry = payload.metaData.entry[0];
-        const changes = entry.changes[0].value;
+        const value = entry.changes[0].value;
         
-        if (changes.messages) {
-          for (const message of changes.messages) {
-            const contact = changes.contacts?.[0];
+        if (value.messages) {
+          for (const message of value.messages) {
+            const contact = value.contacts?.[0];
             const processedMessage = {
               id: message.id,
-              from: contact?.wa_id || message.from,
-              timestamp: message.timestamp,
+              from: message.from,
+              timestamp: parseInt(message.timestamp),
               text: message.text?.body,
               type: message.type,
-              name: contact?.profile?.name,
-              status: 'sent'
+              name: contact?.profile?.name || message.from,
+              status: 'sent',
+              wa_id: contact?.wa_id
             };
             await collection.updateOne(
               { id: message.id },
               { $set: processedMessage },
               { upsert: true }
             );
-            console.log(`Processed message: ${message.id}`);
+            console.log(`Processed message:`, JSON.stringify(processedMessage, null, 2));
           }
         } else if (changes.statuses) {
           for (const status of changes.statuses) {
