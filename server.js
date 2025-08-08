@@ -239,23 +239,26 @@ app.get('/api/messages', async (req, res) => {
 });
 
 async function startServer() {
-  await connectToDatabase();
-  
-  // Process sample payloads
   try {
-    await processPayloads(db);
-    console.log('Sample payloads processed successfully');
-  } catch (error) {
-    console.error('Error processing sample payloads:', error);
-  }
-  
-  // Start the server
-  return new Promise((resolve) => {
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-      resolve();
+    await connectToDatabase();
+    console.log('Connected to MongoDB successfully');
+    
+    // Process sample payloads
+    console.log('Starting to process sample payloads...');
+    const messages = await processPayloads(db);
+    console.log(`Successfully processed ${messages.length} messages`);
+    
+    // Start the server
+    return new Promise((resolve) => {
+      server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+        resolve();
+      });
     });
-  });
+  } catch (error) {
+    console.error('Error starting server:', error);
+    throw error; // Let Render know there was an error
+  }
 }
 
 startServer(); 
