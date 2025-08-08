@@ -26,6 +26,71 @@ function App() {
     };
   }, []);
 
+  // Fallback: inject sample messages if conversations are empty after loading
+  useEffect(() => {
+    if (!loading && conversations.length === 0) {
+      const sampleMessages = [
+        {
+          id: "wamid.HBgMOTE5OTY3NTc4NzIwFQIAEhggMTIzQURFRjEyMzQ1Njc4OTA=",
+          from: "919937320320",
+          timestamp: 1754400000,
+          text: "Hi, I'd like to know more about your services.",
+          type: "text",
+          name: "Ravi Kumar",
+          status: "sent",
+          wa_id: "919937320320"
+        },
+        {
+          id: "wamid.HBgMOTE5OTY3NTc4NzIwFQIAEhggNDc4NzZBQ0YxMjdCQ0VFOTk2NzA3MTI4RkZCNjYyMjc=",
+          from: "918329446654",
+          timestamp: 1754400020,
+          text: "Hi Ravi! Sure, I'd be happy to help you with that. Could you tell me what you're looking for?",
+          type: "text",
+          name: "Ravi Kumar",
+          status: "read",
+          wa_id: "919937320320"
+        },
+        {
+          id: "wamid.HBgMOTI5OTY3NjczODIwFQIAEhggQ0FBQkNERUYwMDFGRjEyMzQ1NkZGQTk5RTJCM0I2NzY=",
+          from: "929967673820",
+          timestamp: 1754401000,
+          text: "Hi, I saw your ad. Can you share more details?",
+          type: "text",
+          name: "Neha Joshi",
+          status: "sent",
+          wa_id: "929967673820"
+        },
+        {
+          id: "wamid.HBgMOTI5OTY3NjczODIwFQIAEhggM0RFNDkxRjEwNDhDQzgwMzk3NzA1ODc1RkU3QzI0MzU=",
+          from: "918329446654",
+          timestamp: 1754401030,
+          text: "Hi Neha! Absolutely. We offer curated home decor pieces—are you looking for nameplates, wall art, or something else?",
+          type: "text",
+          name: "Neha Joshi",
+          status: "delivered",
+          wa_id: "929967673820"
+        }
+      ];
+      // Group messages by wa_id
+      const conversationGroups = sampleMessages.reduce((groups, msg) => {
+        const phoneNumber = msg.wa_id;
+        if (!groups[phoneNumber]) {
+          groups[phoneNumber] = {
+            id: phoneNumber,
+            name: msg.name,
+            messages: []
+          };
+        }
+        groups[phoneNumber].messages.push(msg);
+        return groups;
+      }, {});
+      const conversationList = Object.values(conversationGroups);
+      setConversations(conversationList);
+      setMessages(conversationList[0]?.messages || []);
+      setSelectedConversation(conversationList[0] || null);
+    }
+  }, [loading, conversations]);
+
   const fetchMessages = async () => {
     setLoading(true);
     try {
