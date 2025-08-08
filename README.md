@@ -1,102 +1,90 @@
-# WhatsApp Web Clone
+# WhatsApp Chat Interface - Full Stack Developer Evaluation Task
 
-A complete, production-ready WhatsApp Web clone built with Node.js, Express, React, and MongoDB. Features real-time messaging, status updates, and a responsive design that mimics the original WhatsApp Web interface.
+A WhatsApp-like chat interface implementation for RapidQuest's Full Stack Developer evaluation. The task involves creating a real-time chat interface that processes and displays WhatsApp messages with a focus on real-time updates and a faithful recreation of the WhatsApp Web UI.
 
-## 🚀 Features
+## Features
 
-- **Real-time Messaging**: WebSocket integration for instant message delivery
-- **Status Updates**: Message status indicators (sent, delivered, read)
-- **Responsive Design**: Mobile-friendly interface
-- **Conversation Management**: List and manage multiple conversations
-- **Message History**: Persistent message storage in MongoDB
-- **Webhook Support**: Handle incoming WhatsApp webhooks
-- **Modern UI**: WhatsApp Web-like interface with smooth animations
+- Real-time WhatsApp message processing and display
+- WhatsApp Web-like interface with authentic styling
+- Support for multiple conversations
+- Message status tracking (sent, delivered, read)
+- Real-time message updates through WebSocket
+- Responsive design matching WhatsApp Web
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
-- **Node.js** with Express.js
-- **MongoDB** for data persistence
-- **Socket.IO** for real-time communication
-- **CORS** enabled for cross-origin requests
+- Node.js with Express
+- MongoDB for message storage
+- Socket.IO for real-time updates
+- WebSocket for bi-directional communication
 
 ### Frontend
-- **React** with functional components and hooks
-- **Socket.IO Client** for real-time updates
-- **CSS3** with responsive design
-- **Modern JavaScript** (ES6+)
+- React.js with Hooks
+- Socket.IO Client
+- CSS3 with WhatsApp Web styling
+- Modern JavaScript (ES6+)
 
-## 📋 Prerequisites
+## Setup and Installation
 
-- Node.js (v16 or higher)
-- MongoDB (local or MongoDB Atlas)
-- npm or yarn
+### Backend Setup
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Copy `.env.example` to `.env` and configure:
+   ```bash
+   cp env.example .env
+   # Set MONGODB_URI in .env
+   ```
+4. Start the server:
+   ```bash
+   node server.js
+   ```
+   Server runs on port 10000 by default
 
-## 🚀 Quick Start
+### Frontend Setup
+1. Navigate to client directory:
+   ```bash
+   cd client
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start development server:
+   ```bash
+   npm start
+   ```
+   Frontend runs on port 3000 by default
 
-### 1. Clone the Repository
-```bash
-git clone <repository-url>
-cd whatsapp-web-clone
-```
-
-### 2. Install Dependencies
-```bash
-# Install backend dependencies
-npm install
-
-# Install frontend dependencies
-cd client
-npm install
-cd ..
-```
-
-### 3. Set Up Environment Variables
-```bash
-# Copy the example environment file
-cp env.example .env
-
-# Edit .env with your MongoDB connection string
-# For local MongoDB: MONGODB_URI=mongodb://localhost:27017
-# For MongoDB Atlas: MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net
-```
-
-### 4. Run Data Ingestion Script
-```bash
-# This will populate the database with sample data
-npm run ingest
-```
-
-### 5. Start the Development Server
-```bash
-# Start the backend server (from root directory)
-npm run dev
-
-# In a new terminal, start the frontend (from root directory)
-cd client
-npm start
-```
-
-The application will be available at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-whatsapp-web-clone/
-├── client/                 # React frontend
+├── client/                 # Frontend React application
 │   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── App.js         # Main App component
-│   │   └── App.css        # Main styles
+│   │   ├── components/    # React components
+│   │   ├── App.js        # Main application component
+│   │   └── index.js      # Entry point
 │   └── package.json
 ├── whatsapp sample payloads/  # Sample webhook data
-├── server.js              # Express server
-├── data-ingestion.js      # Data migration script
-├── package.json           # Backend dependencies
-└── README.md
+├── server.js              # Express server setup
+├── webhook-payload-processor.js  # WhatsApp webhook processing
+└── package.json
 ```
+
+## API Endpoints
+
+- `POST /webhook` - Receive WhatsApp webhook updates
+- `GET /api/messages` - Get all messages
+- `GET /api/conversations` - Get all conversations
+
+## Live Demo
+
+The application is deployed and can be accessed at:
+- Frontend: https://kutral.github.io/Task/
+- Backend: https://task-llea.onrender.com
 
 ## 🔧 API Endpoints
 
