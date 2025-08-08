@@ -11,7 +11,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' ? false : "http://localhost:3000",
+    origin: ["https://kutral.github.io", "http://localhost:3000"],
     methods: ["GET", "POST"]
   }
 });
@@ -219,7 +219,7 @@ const PORT = process.env.PORT || 5000;
 async function startServer() {
   await connectToDatabase();
   
-  server.listen(PORT, () => {
+  server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
   });
 }

@@ -4,7 +4,7 @@ import './App.css';
 import ConversationList from './components/ConversationList';
 import ChatWindow from './components/ChatWindow';
 
-const API_BASE_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000';
+const API_BASE_URL = process.env.NODE_ENV === 'production' ? 'https://task-llea.onrender.com' : 'http://localhost:5000';
 
 function App() {
   const [conversations, setConversations] = useState([]);
