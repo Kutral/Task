@@ -1,6 +1,11 @@
 # WhatsApp Chat Interface - Full Stack Developer Evaluation Task
 
-A WhatsApp-like chat interface implementation for RapidQuest's Full Stack Developer evaluation. The task involves creating a real-time chat interface that processes and displays WhatsApp messages with a focus on real-time updates and a faithful recreation of the WhatsApp Web UI.
+A WhatsApp-like chat interface implementation for RapidQuest's Full Stack Developer evaluation. This implementation uses MongoDB Atlas for data storage and is deployed on Render.com for reliable cloud hosting. The application provides real-time chat functionality with a faithful recreation of the WhatsApp Web UI.
+
+## Deployment
+- Frontend: GitHub Pages (https://kutral.github.io/Task/)
+- Backend: Render.com (https://task-llea.onrender.com)
+- Database: MongoDB Atlas
 
 ## Features
 
@@ -10,14 +15,17 @@ A WhatsApp-like chat interface implementation for RapidQuest's Full Stack Develo
 - Message status tracking (sent, delivered, read)
 - Real-time message updates through WebSocket
 - Responsive design matching WhatsApp Web
+- Cloud deployment with auto-scaling support
+- Persistent data storage in MongoDB Atlas
 
 ## Tech Stack
 
 ### Backend
 - Node.js with Express
-- MongoDB for message storage
+- MongoDB Atlas for cloud database
 - Socket.IO for real-time updates
 - WebSocket for bi-directional communication
+- Render.com for backend hosting
 
 ### Frontend
 - React.js with Hooks
@@ -33,16 +41,24 @@ A WhatsApp-like chat interface implementation for RapidQuest's Full Stack Develo
    ```bash
    npm install
    ```
-3. Copy `.env.example` to `.env` and configure:
+3. Copy `.env.example` to `.env` and configure MongoDB Atlas:
    ```bash
    cp env.example .env
-   # Set MONGODB_URI in .env
+   # Set MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>
    ```
 4. Start the server:
    ```bash
    node server.js
    ```
    Server runs on port 10000 by default
+
+### MongoDB Atlas Configuration
+1. Create a MongoDB Atlas account
+2. Set up a new cluster
+3. Create a database user
+4. Whitelist your IP address
+5. Get your connection string and add it to .env
+6. Database will be auto-initialized on first run
 
 ### Frontend Setup
 1. Navigate to client directory:
@@ -80,11 +96,27 @@ A WhatsApp-like chat interface implementation for RapidQuest's Full Stack Develo
 - `GET /api/messages` - Get all messages
 - `GET /api/conversations` - Get all conversations
 
-## Live Demo
+## Deployment Details
 
-The application is deployed and can be accessed at:
-- Frontend: https://kutral.github.io/Task/
-- Backend: https://task-llea.onrender.com
+The application is deployed using a modern cloud stack:
+
+### Frontend Deployment (GitHub Pages)
+- URL: https://kutral.github.io/Task/
+- Automated deployment via GitHub Actions
+- Static hosting with global CDN
+
+### Backend Deployment (Render.com)
+- URL: https://task-llea.onrender.com
+- Auto-deployment from GitHub main branch
+- Zero-downtime deployments
+- Automatic SSL/TLS certificates
+- Environment variables configured in Render dashboard
+
+### Database (MongoDB Atlas)
+- Cloud-hosted MongoDB cluster
+- Automatic backups and scaling
+- Data replication for high availability
+- Secure connection via MongoDB Atlas URI
 
 ## 🔧 API Endpoints
 
