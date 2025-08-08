@@ -1,6 +1,7 @@
 # WhatsApp Chat Interface - Full Stack Developer Evaluation Task
 
-A WhatsApp-like chat interface implementation for RapidQuest's Full Stack Developer evaluation. This implementation uses MongoDB Atlas for data storage and is deployed on Render.com for reliable cloud hosting. The application provides real-time chat functionality with a faithful recreation of the WhatsApp Web UI.
+I have given my best to complete the task it is hard , so kindly review the task and give me the opportunity to work with you. A WhatsApp-like chat interface implementation for RapidQuest's Full Stack Developer evaluation. This implementation uses MongoDB Atlas for data storage and is deployed on Render.com for reliable cloud hosting. The application provides real-time chat functionality with a faithful recreation of the WhatsApp Web UI.
+
 
 ## Deployment
 - Frontend: GitHub Pages (https://kutral.github.io/Task/)
@@ -150,39 +151,7 @@ The application is deployed using a modern cloud stack:
 - Efficient data aggregation for conversation lists
 - Real-time database updates via webhooks
 
-## 🚀 Deployment
 
-### Deploy to Heroku
-1. Create a Heroku account and install Heroku CLI
-2. Set up MongoDB Atlas cluster
-3. Configure environment variables in Heroku dashboard
-4. Deploy using Heroku Git integration
-
-### Deploy to Vercel
-1. Connect your GitHub repository to Vercel
-2. Configure environment variables
-3. Deploy automatically on push to main branch
-
-### Environment Variables for Production
-```bash
-MONGODB_URI=your_mongodb_atlas_connection_string
-NODE_ENV=production
-PORT=5000
-```
-
-## 🧪 Testing
-
-### Backend Testing
-```bash
-# Test API endpoints
-curl http://localhost:5000/api/conversations
-```
-
-### Frontend Testing
-```bash
-cd client
-npm test
-```
 
 ## 🔍 Sample Data
 
