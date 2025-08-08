@@ -26,6 +26,9 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 const DATABASE_NAME = 'whatsapp';
 const COLLECTION_NAME = 'processed_messages';
 
+// Import and run the webhook payload processor
+const { processPayloads } = require('./webhook-payload-processor');
+
 let db;
 
 async function connectToDatabase() {
@@ -216,8 +219,27 @@ app.get('*', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
+// API endpoint to get all messages
+app.get('/api/messages', async (req, res) => {
+  try {
+    const messages = await db.collection(COLLECTION_NAME).find({}).toArray();
+    res.json(messages);
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 async function startServer() {
   await connectToDatabase();
+  
+  // Process sample payloads
+  try {
+    await processPayloads(db);
+    console.log('Sample payloads processed successfully');
+  } catch (error) {
+    console.error('Error processing sample payloads:', error);
+  }
   
   server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);

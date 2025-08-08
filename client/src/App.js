@@ -18,13 +18,41 @@ function App() {
     const newSocket = io(API_BASE_URL);
     setSocket(newSocket);
 
-    // Fetch conversations on mount
-    fetchConversations();
+    // Fetch messages on mount
+    fetchMessages();
 
     return () => {
       newSocket.close();
     };
   }, []);
+
+  const fetchMessages = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/messages`);
+      const data = await response.json();
+      
+      // Group messages by conversation
+      const conversationsMap = data.reduce((acc, message) => {
+        const conversationId = message.from;
+        if (!acc[conversationId]) {
+          acc[conversationId] = {
+            id: conversationId,
+            name: message.name || message.from,
+            messages: []
+          };
+        }
+        acc[conversationId].messages.push(message);
+        return acc;
+      }, {});
+
+      const conversationsList = Object.values(conversationsMap);
+      setConversations(conversationsList);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!socket) return;
