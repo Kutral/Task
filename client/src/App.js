@@ -95,19 +95,20 @@ function App() {
     }
   };
 
-  const fetchMessages = async (wa_id) => {
+  const fetchConversationMessages = async (wa_id) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/conversations/${wa_id}`);
-      const data = await response.json();
-      setMessages(data);
+      const conversation = conversations.find(c => c.id === wa_id);
+      if (conversation) {
+        setMessages(conversation.messages);
+      }
     } catch (error) {
-      console.error('Error fetching messages:', error);
+      console.error('Error fetching conversation messages:', error);
     }
   };
 
   const handleConversationSelect = (conversation) => {
     setSelectedConversation(conversation);
-    fetchMessages(conversation.wa_id);
+    fetchConversationMessages(conversation.id);
   };
 
   const handleSendMessage = async (text) => {

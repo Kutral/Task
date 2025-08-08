@@ -21,6 +21,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('client/build'));
 
+// Root route for health check
+app.get('/', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+// API endpoint to get all messages
+
 // MongoDB connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 const DATABASE_NAME = 'whatsapp';
@@ -217,7 +224,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
-const PORT = process.env.PORT || 5000;
+// Use the port provided by Render, falling back to 10000 for local development
+const PORT = process.env.PORT || 10000;
 
 // API endpoint to get all messages
 app.get('/api/messages', async (req, res) => {
@@ -241,8 +249,12 @@ async function startServer() {
     console.error('Error processing sample payloads:', error);
   }
   
-  server.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on port ${PORT}`);
+  // Start the server
+  return new Promise((resolve) => {
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+      resolve();
+    });
   });
 }
 
